@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_final_submission_dicoding/components/snackbar_custom.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class InboxScreen extends StatelessWidget {
@@ -90,39 +91,47 @@ class DesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 32,
-          children: [
-            Text(
-              'Inbox',
-              textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 16,
-              children: [
-                Expanded(
-                  child: Column(
-                    spacing: 16,
-                    children: [
-                      for (final _InboxItem item in _inboxItems)
-                        ButtonInbox(
-                          iconLeft: item.icon,
-                          message: item.message,
-                          day: _formatDayDate(item.dateTime),
-                          time: _formatTime(item.dateTime),
-                        ),
-                    ],
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 32,
+            children: [
+              Text(
+                'Inbox',
+                textAlign: TextAlign.start,
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 16,
+                children: [
+                  Expanded(
+                    child: Column(
+                      spacing: 16,
+                      children: [
+                        for (final _InboxItem item in _inboxItems)
+                          ButtonInbox(
+                            onTap: () {
+                              showSnackBarCustom(
+                                context,
+                                title: 'Maaf, fitur belum tersedia 🙏🏻☺️',
+                              );
+                            },
+                            iconLeft: item.icon,
+                            message: item.message,
+                            day: _formatDayDate(item.dateTime),
+                            time: _formatTime(item.dateTime),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -134,37 +143,39 @@ class MobileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 16,
-          children: [
-            Text(
-              'Inbox',
-              textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-            ButtonInbox(
-              iconLeft: _inboxItems[0].icon,
-              message: _inboxItems[0].message,
-              day: _formatDayDate(_inboxItems[0].dateTime),
-              time: _formatTime(_inboxItems[0].dateTime),
-            ),
-            ButtonInbox(
-              iconLeft: _inboxItems[1].icon,
-              message: _inboxItems[1].message,
-              day: _formatDayDate(_inboxItems[1].dateTime),
-              time: _formatTime(_inboxItems[1].dateTime),
-            ),
-            ButtonInbox(
-              iconLeft: _inboxItems[2].icon,
-              message: _inboxItems[2].message,
-              day: _formatDayDate(_inboxItems[2].dateTime),
-              time: _formatTime(_inboxItems[2].dateTime),
-            ),
-          ],
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 16,
+            children: [
+              Text(
+                'Inbox',
+                textAlign: TextAlign.start,
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              Column(
+                spacing: 16,
+                children: [
+                  for (final _InboxItem item in _inboxItems)
+                    ButtonInbox(
+                      onTap: () {
+                        showSnackBarCustom(
+                          context,
+                          title: 'Maaf, fitur belum tersedia 🙏🏻☺️',
+                        );
+                      },
+                      iconLeft: item.icon,
+                      message: item.message,
+                      day: _formatDayDate(item.dateTime),
+                      time: _formatTime(item.dateTime),
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -178,68 +189,73 @@ class ButtonInbox extends StatelessWidget {
     required this.message,
     required this.day,
     required this.time,
+    this.onTap,
   });
 
   final dynamic iconLeft;
   final String message;
   final String day;
   final String time;
+  final dynamic onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        spacing: 16,
-        children: [
-          Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(999),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          spacing: 16,
+          children: [
+            Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: PhosphorIcon(
+                iconLeft,
+                size: 32,
+                color: Colors.blue.shade700,
+              ),
             ),
-            child: PhosphorIcon(
-              iconLeft,
-              size: 32,
-              color: Colors.blue.shade700,
-            ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  message,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      day,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    message,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      time,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.normal,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        day,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Text(
+                        time,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

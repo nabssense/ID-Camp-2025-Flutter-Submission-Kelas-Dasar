@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_final_submission_dicoding/components/doctor_history_detail.dart';
+import 'package:flutter_final_submission_dicoding/components/snackbar_custom.dart';
 import 'package:flutter_final_submission_dicoding/models/patient_medical_history.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -452,11 +453,22 @@ class RightAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-    
       spacing: 16,
       children: [
-        _ActionButton(icon: PhosphorIconsBold.pill, label: 'Treatment'),
-        _ActionButton(icon: PhosphorIconsBold.note, label: 'Notes'),
+        _ActionButton(
+          icon: PhosphorIconsBold.pill,
+          label: 'Treatment',
+          onTap: () {
+            showSnackBarCustom(context, title: 'Maaf, fitur belum tersedia 🙏🏻☺️');
+          },
+        ),
+        _ActionButton(
+          icon: PhosphorIconsBold.note,
+          label: 'Notes',
+          onTap: () {
+            showSnackBarCustom(context, title: 'Maaf, fitur belum tersedia 🙏🏻☺️');
+          },
+        ),
         _ActionButton(
           icon: PhosphorIconsBold.shareNetwork,
           label: 'Share',
@@ -481,8 +493,20 @@ class BottomAppBarMobile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 48,
         children: [
-          _ActionButton(icon: PhosphorIconsBold.pill, label: 'Treatment'),
-          _ActionButton(icon: PhosphorIconsBold.note, label: 'Notes'),
+          _ActionButton(
+            icon: PhosphorIconsBold.pill,
+            label: 'Treatment',
+            onTap: () {
+              showSnackBarCustom(context, title: 'Maaf, fitur belum tersedia 🙏🏻☺️');
+            },
+          ),
+          _ActionButton(
+            icon: PhosphorIconsBold.note,
+            label: 'Notes',
+            onTap: () {
+              showSnackBarCustom(context, title: 'Maaf, fitur belum tersedia 🙏🏻☺️');
+            },
+          ),
           _ActionButton(
             icon: PhosphorIconsBold.shareNetwork,
             label: 'Share',
@@ -537,11 +561,7 @@ class DashedDivider extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
-  const _ActionButton({
-    required this.icon,
-    required this.label,
-    this.onTap,
-  });
+  const _ActionButton({required this.icon, required this.label, this.onTap});
 
   final IconData icon;
   final String label;
@@ -660,14 +680,12 @@ void _shareMedicalSummary(MedicalSummary medical) {
   if (medical.prescriptions.isNotEmpty) {
     buffer.writeln('Prescriptions:');
     for (final Prescription p in medical.prescriptions) {
-      final String frequency =
-          p.frequency.isNotEmpty ? ' • ${p.frequency}' : '';
+      final String frequency = p.frequency.isNotEmpty
+          ? ' • ${p.frequency}'
+          : '';
       buffer.writeln('- ${p.name} ${p.dosage} (${p.form})$frequency');
     }
   }
 
-  Share.share(
-    buffer.toString(),
-    subject: 'Patient Medical Summary',
-  );
+  Share.share(buffer.toString(), subject: 'Patient Medical Summary');
 }

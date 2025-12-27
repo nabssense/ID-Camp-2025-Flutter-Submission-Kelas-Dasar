@@ -125,7 +125,8 @@ class TopAppBar extends StatelessWidget {
     required this.goToIndex,
   });
   final int selectedIndex;
-  final goToIndex;
+  
+  final dynamic goToIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +139,7 @@ class TopAppBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () => goToIndex(0),
-            child: Container(
+            child: SizedBox(
               child: Image.asset(
                 'assets/images/Logo-Primaya-Hospital.png',
                 width: 128,
@@ -216,7 +217,7 @@ class BottomAppBarMobile extends StatelessWidget {
     required this.goToIndex,
   });
   final int selectedIndex;
-  final goToIndex;
+  final dynamic goToIndex;
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,10 @@ import 'package:flutter_final_submission_dicoding/models/patient_medical_history
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ListDoctorHistory extends StatelessWidget {
-  const ListDoctorHistory({super.key});
+  const ListDoctorHistory({super.key, required this.items, this.scrollable = true});
+
+  final List<MedicalSummary>? items;
+  final bool scrollable;
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +15,14 @@ class ListDoctorHistory extends StatelessWidget {
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           if (constraints.maxWidth <= 768) {
-            return MobileScreen();
+            return MobileScreen(items: items, scrollable: scrollable);
           } else {
             final int crossAxisCount = constraints.maxWidth >= 1280 ? 3 : 2;
-            return DesktopScreen(crossAxisCount: crossAxisCount,);
+            return DesktopScreen(
+              crossAxisCount: crossAxisCount,
+              items: items,
+              scrollable: scrollable,
+            );
           }
         },
       ),
@@ -24,20 +31,29 @@ class ListDoctorHistory extends StatelessWidget {
 }
 
 class DesktopScreen extends StatelessWidget {
-  const DesktopScreen({super.key, required this.crossAxisCount});
+  const DesktopScreen({
+    super.key,
+    required this.crossAxisCount,
+    this.items,
+    this.scrollable = true,
+  });
 
   final int crossAxisCount;
+  final List<MedicalSummary>? items;
+  final bool scrollable;
 
   @override
   Widget build(BuildContext context) {
+    final dataMedical = items ?? medicalHistoryList;
     return MasonryGridView.count(
       shrinkWrap: true,
-      itemCount: medicalHistoryList.length,
+      itemCount: dataMedical.length,
       crossAxisCount: crossAxisCount,
+      physics: scrollable ? null : const NeverScrollableScrollPhysics(),
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
       itemBuilder: (context, index) {
-        final MedicalSummary medicalSummary = medicalHistoryList[index];
+        final MedicalSummary medicalSummary = dataMedical[index];
         return InkWell(
           onTap: () {
             Navigator.push(
@@ -112,16 +128,23 @@ class DesktopScreen extends StatelessWidget {
 }
 
 class MobileScreen extends StatelessWidget {
-  const MobileScreen({super.key});
+  const MobileScreen({super.key, this.items, this.scrollable = true});
+
+  final List<MedicalSummary>? items;
+  final bool scrollable;
+
 
   @override
   Widget build(BuildContext context) {
+    final dataMedical = items ?? medicalHistoryList;
+
     return ListView.separated(
       shrinkWrap: true,
-      itemCount: medicalHistoryList.length,
+      itemCount: dataMedical.length,
+      physics: scrollable ? null : const NeverScrollableScrollPhysics(),
       separatorBuilder: (_, __) => const SizedBox(height: 16),
       itemBuilder: (context, index) {
-        final MedicalSummary medicalSummary = medicalHistoryList[index];
+        final MedicalSummary medicalSummary = dataMedical[index];
         return InkWell(
           onTap: () {
             Navigator.push(
