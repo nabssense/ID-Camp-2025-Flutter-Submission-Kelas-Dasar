@@ -644,7 +644,7 @@ class MobileScreen extends StatelessWidget {
                 Positioned(
                   left: 0,
                   right: 0,
-                  bottom: 0, //MediaQuery.of(context).size.height * -0.16,
+                  bottom: 0, 
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
