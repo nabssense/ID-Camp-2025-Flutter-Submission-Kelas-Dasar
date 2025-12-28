@@ -316,26 +316,29 @@ class MobileScreen extends StatelessWidget {
                                 style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(fontWeight: FontWeight.w600),
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                spacing: 12,
-                                children: [
-                                  Text(
-                                    doctor.specialty,
-                                    style: Theme.of(context).textTheme.bodyLarge
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                  ),
-                                  Text(
-                                    doctor.tags.join(', '),
-                                    style: Theme.of(context).textTheme.bodyLarge
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                  ),
-                                ],
+                              SizedBox(
+                                width: double.infinity,
+                                child: Wrap(
+                                  alignment:
+                                      WrapAlignment.spaceBetween,
+                                  spacing: 12,
+                                  children: [
+                                    Text(
+                                      doctor.specialty,
+                                      style: Theme.of(context).textTheme.bodyLarge
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                    ),
+                                    Text(
+                                      doctor.tags.join(', '),
+                                      style: Theme.of(context).textTheme.bodyLarge
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

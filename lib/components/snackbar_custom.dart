@@ -8,20 +8,22 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBarCustom(
     SnackBar(
       content: Row(
         children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
+          Expanded(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],
       ),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: Theme.of(context).colorScheme.onSurface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: Colors.grey.shade900,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       margin: EdgeInsets.all(16),
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: EdgeInsets.only(left: 24, right: 16, top: 8, bottom: 8),
       elevation: 10,
       showCloseIcon: true,
       closeIconColor: Colors.white,

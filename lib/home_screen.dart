@@ -591,42 +591,48 @@ class MobileScreen extends StatelessWidget {
                                       ),
                                       child: Column(
                                         children: [
-                                          Row(
-                                            children: [
-                                              PhosphorIcon(
-                                                PhosphorIconsRegular.calendar,
-                                                size: 20,
-                                              ),
-                                              SizedBox(width: 8),
-                                              Text(
-                                                'Monday, 06 Oct 2025・07:45',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge
-                                                    ?.copyWith(
-                                                      color: Colors.white,
-                                                    ),
-                                              ),
-                                            ],
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Wrap(
+                                              children: [
+                                                PhosphorIcon(
+                                                  PhosphorIconsRegular.calendar,
+                                                  size: 20,
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text(
+                                                  'Monday, 06 Oct 2025・07:45',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge
+                                                      ?.copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              PhosphorIcon(
-                                                PhosphorIconsRegular.ticket,
-                                                size: 20,
-                                              ),
-                                              SizedBox(width: 8),
-                                              Text(
-                                                'A-03・HP-0391239003',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge
-                                                    ?.copyWith(
-                                                      color: Colors.white,
-                                                    ),
-                                              ),
-                                            ],
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Wrap(
+                                              children: [
+                                                PhosphorIcon(
+                                                  PhosphorIconsRegular.ticket,
+                                                  size: 20,
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text(
+                                                  'A-03・HP-0391239003',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge
+                                                      ?.copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),

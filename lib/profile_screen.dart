@@ -192,13 +192,15 @@ class MobileScreen extends StatelessWidget {
                           scale: 1,
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('John Doe'),
-                          Text('johndoe@gmail.com'),
-                          Text('+123-456-789'),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('John Doe'),
+                            Text('johndoe@gmail.com'),
+                            Text('+123-456-789'),
+                          ],
+                        ),
                       ),
                     ],
                   ),

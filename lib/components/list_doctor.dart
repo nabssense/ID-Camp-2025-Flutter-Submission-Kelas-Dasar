@@ -90,47 +90,60 @@ class DesktopScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset(doctor.imageAsset, width: 116, height: 116),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        doctor.name,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
+                      Image.asset(doctor.imageAsset, width: 116, height: 116),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                doctor.name,
+                                style: Theme.of(context).textTheme.titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                doctor.specialty,
+                                style: Theme.of(context).textTheme.bodyLarge
+                                    ?.copyWith(color: Colors.grey[600]),
+                              ),
+                              Wrap(
+                                spacing: 4,
+                                children: [
+                                  Text(
+                                    doctor.priceLabel,
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(color: Colors.black),
+                                  ),
+                                  Text(
+                                    ' • ',
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(color: Colors.black),
+                                  ),
+                                  PhosphorIcon(
+                                    PhosphorIconsFill.star,
+                                    size: 20,
+                                    color: Colors.yellow.shade700,
+                                  ),
+                                  Text(
+                                    '${doctor.rating}',
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Text(
-                        doctor.specialty,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      Row(
-                        spacing: 4,
-                        children: [
-                          Text(
-                            doctor.priceLabel,
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(color: Colors.black),
-                          ),
-                          Text(
-                            ' • ',
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(color: Colors.black),
-                          ),
-                          PhosphorIcon(PhosphorIconsFill.star, size: 20, color: Colors.yellow.shade700,),
-                          Text(
-                            '${doctor.rating}',
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(color: Colors.black),
-                          ),
-                        ],
                       ),
                     ],
                   ),
                 ),
+
                 GradientButton(
                   onPressed: () {
                     Navigator.push(
@@ -214,47 +227,60 @@ class MobileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset(doctor.imageAsset, width: 116, height: 116),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        doctor.name,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
+                      Image.asset(doctor.imageAsset, width: 116, height: 116),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                doctor.name,
+                                style: Theme.of(context).textTheme.titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                doctor.specialty,
+                                style: Theme.of(context).textTheme.bodyLarge
+                                    ?.copyWith(color: Colors.grey[600]),
+                              ),
+                              Wrap(
+                                spacing: 4,
+                                children: [
+                                  Text(
+                                    doctor.priceLabel,
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(color: Colors.black),
+                                  ),
+                                  Text(
+                                    ' • ',
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(color: Colors.black),
+                                  ),
+                                  PhosphorIcon(
+                                    PhosphorIconsFill.star,
+                                    size: 20,
+                                    color: Colors.yellow.shade700,
+                                  ),
+                                  Text(
+                                    '${doctor.rating}',
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Text(
-                        doctor.specialty,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      Row(
-                        spacing: 4,
-                        children: [
-                          Text(
-                            doctor.priceLabel,
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(color: Colors.black),
-                          ),
-                          Text(
-                            ' • ',
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(color: Colors.black),
-                          ),
-                          PhosphorIcon(PhosphorIconsFill.star, size: 20, color: Colors.yellow.shade700,),
-                          Text(
-                            '${doctor.rating}',
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(color: Colors.black),
-                          ),
-                        ],
                       ),
                     ],
                   ),
                 ),
+
                 GradientButton(
                   onPressed: () {
                     Navigator.push(

@@ -3,37 +3,22 @@ import 'package:flutter_final_submission_dicoding/components/list_doctor_history
 import 'package:flutter_final_submission_dicoding/models/patient_medical_history.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 5,
-      child: Scaffold(
-        body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            if (constraints.maxWidth <= 768) {
-              return MobileScreen();
-            } else {
-              return DesktopScreen();
-            }
-          },
-        ),
-      ),
-    );
-  }
+  State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class DesktopScreen extends StatefulWidget {
-  const DesktopScreen({super.key});
+class _HistoryScreenState extends State<HistoryScreen> {
+  String _query = '';
+  final _controller = TextEditingController();
 
   @override
-  State<DesktopScreen> createState() => _DesktopScreenState();
-}
-
-class _DesktopScreenState extends State<DesktopScreen> {
-  String _query = '';
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   List<MedicalSummary> get _filteredHistory {
     final q = _query.trim().toLowerCase();
@@ -46,6 +31,44 @@ class _DesktopScreenState extends State<DesktopScreen> {
           m.tags.any((t) => t.toLowerCase().contains(q));
     }).toList();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            if (constraints.maxWidth <= 768) {
+              return MobileScreen(
+                onQueryChanged: (value) => setState(() => _query = value),
+                filteredHistory: _filteredHistory,
+                controllerSearch: _controller,
+              );
+            } else {
+              return DesktopScreen(
+                onQueryChanged: (value) => setState(() => _query = value),
+                filteredHistory: _filteredHistory,
+                controllerSearch: _controller,
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class DesktopScreen extends StatelessWidget {
+  const DesktopScreen({
+    super.key,
+    required this.onQueryChanged,
+    required this.filteredHistory,
+    required this.controllerSearch,
+  });
+  final ValueChanged<String> onQueryChanged;
+  final List<MedicalSummary> filteredHistory;
+  final dynamic controllerSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +108,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                                 borderRadius: BorderRadius.circular(32),
                               ),
                               child: TextField(
-                                onChanged: (value) =>
-                                    setState(() => _query = value),
+                                controller: controllerSearch,
+                                onChanged: onQueryChanged,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                     horizontal: 16,
@@ -151,7 +174,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
           padding: EdgeInsets.symmetric(horizontal: 32),
           child: TabBarView(
             children: [
-              ListDoctorHistory(items: _filteredHistory, scrollable: true),
+              ListDoctorHistory(items: filteredHistory, scrollable: true),
               Center(child: Text('History Empty')),
               Center(child: Text('History Empty')),
               Center(child: Text('History Empty')),
@@ -164,27 +187,16 @@ class _DesktopScreenState extends State<DesktopScreen> {
   }
 }
 
-class MobileScreen extends StatefulWidget {
-  const MobileScreen({super.key});
-
-  @override
-  State<MobileScreen> createState() => _MobileScreenState();
-}
-
-class _MobileScreenState extends State<MobileScreen> {
-  String _query = '';
-
-  List<MedicalSummary> get _filteredHistory {
-    final q = _query.trim().toLowerCase();
-    if (q.isEmpty) return medicalHistoryList;
-    return medicalHistoryList.where((m) {
-      return m.doctor.name.toLowerCase().contains(q) ||
-          m.doctor.specialty.toLowerCase().contains(q) ||
-          m.diagnosisTitle.toLowerCase().contains(q) ||
-          m.chiefComplaint.toLowerCase().contains(q) ||
-          m.tags.any((t) => t.toLowerCase().contains(q));
-    }).toList();
-  }
+class MobileScreen extends StatelessWidget {
+  const MobileScreen({
+    super.key,
+    required this.onQueryChanged,
+    required this.filteredHistory,
+    required this.controllerSearch,
+  });
+  final ValueChanged<String> onQueryChanged;
+  final List<MedicalSummary> filteredHistory;
+  final dynamic controllerSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -193,26 +205,17 @@ class _MobileScreenState extends State<MobileScreen> {
       child: NestedScrollView(
         headerSliverBuilder: (context, _) {
           return [
-            SliverAppBar(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              elevation: 0,
-              pinned: false,
-              floating: false,
-              expandedHeight: 140,
-              automaticallyImplyLeading: false,
-              flexibleSpace: FlexibleSpaceBar(
-                collapseMode: CollapseMode.pin,
-                background: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'History \nappointment',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
-                  ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'History \nappointment',
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -243,8 +246,8 @@ class _MobileScreenState extends State<MobileScreen> {
                                 borderRadius: BorderRadius.circular(32),
                               ),
                               child: TextField(
-                                onChanged: (value) =>
-                                    setState(() => _query = value),
+                                controller: controllerSearch,
+                                onChanged: onQueryChanged,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 16,
@@ -278,18 +281,22 @@ class _MobileScreenState extends State<MobileScreen> {
                               ),
                             ),
                           ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            clipBehavior: Clip.none,
-                            child: Row(
-                              spacing: 16,
-                              children: const [
-                                _CustomTabBar(title: 'General', index: 0),
-                                _CustomTabBar(title: 'Dentist', index: 1),
-                                _CustomTabBar(title: 'Eye', index: 2),
-                                _CustomTabBar(title: 'Skin', index: 3),
-                                _CustomTabBar(title: 'Other', index: 4),
-                              ],
+                          Ink(
+                            width: double.infinity,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              clipBehavior: Clip.none,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 16,
+                                children: const [
+                                  _CustomTabBar(title: 'General', index: 0),
+                                  _CustomTabBar(title: 'Dentist', index: 1),
+                                  _CustomTabBar(title: 'Eye', index: 2),
+                                  _CustomTabBar(title: 'Skin', index: 3),
+                                  _CustomTabBar(title: 'Other', index: 4),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -303,7 +310,7 @@ class _MobileScreenState extends State<MobileScreen> {
         },
         body: TabBarView(
           children: [
-            _HistoryTabBody(items: _filteredHistory),
+            _HistoryTabBody(items: filteredHistory),
             _EmptyTabBody(),
             _EmptyTabBody(),
             _EmptyTabBody(),

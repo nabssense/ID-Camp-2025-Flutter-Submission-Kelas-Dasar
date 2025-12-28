@@ -3,37 +3,22 @@ import 'package:flutter_final_submission_dicoding/components/list_doctor.dart';
 import 'package:flutter_final_submission_dicoding/models/doctor_list.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class BookAppointmentScreen extends StatelessWidget {
+class BookAppointmentScreen extends StatefulWidget {
   const BookAppointmentScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 5,
-      child: Scaffold(
-        body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            if (constraints.maxWidth <= 768) {
-              return MobileScreen();
-            } else {
-              return DesktopScreen();
-            }
-          },
-        ),
-      ),
-    );
-  }
+  State<BookAppointmentScreen> createState() => _BookAppointmentScreenState();
 }
 
-class DesktopScreen extends StatefulWidget {
-  const DesktopScreen({super.key});
+class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
+  String _query = '';
+  final _controller = TextEditingController();
 
   @override
-  State<DesktopScreen> createState() => _DesktopScreenState();
-}
-
-class _DesktopScreenState extends State<DesktopScreen> {
-  String _query = '';
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   List<Doctor> get _filteredHistory {
     final q = _query.trim().toLowerCase();
@@ -45,6 +30,45 @@ class _DesktopScreenState extends State<DesktopScreen> {
           d.tags.any((t) => t.toLowerCase().contains(q));
     }).toList();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            if (constraints.maxWidth <= 768) {
+              return MobileScreen(
+                controllerSearch: _controller,
+                onQueryChanged: (value) => setState(() => _query = value),
+                filteredHistory: _filteredHistory,
+              );
+            } else {
+              return DesktopScreen(
+                controllerSearch: _controller,
+                onQueryChanged: (value) => setState(() => _query = value),
+                filteredHistory: _filteredHistory,
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class DesktopScreen extends StatelessWidget {
+  const DesktopScreen({
+    super.key,
+    required this.onQueryChanged,
+    required this.filteredHistory,
+    required this.controllerSearch,
+  });
+
+  final ValueChanged<String> onQueryChanged;
+  final List<Doctor> filteredHistory;
+  final dynamic controllerSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +108,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                             borderRadius: BorderRadius.circular(32),
                           ),
                           child: TextField(
-                            onChanged: (value) =>
-                                setState(() => _query = value),
+                            controller: controllerSearch,
+                            onChanged: onQueryChanged,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16,
@@ -147,7 +171,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                       case 0:
                         return ListDoctor(
                           scrollable: false,
-                          searchDataDoctor: _filteredHistory,
+                          searchDataDoctor: filteredHistory,
                         );
                       default:
                         return const Center(child: Text('Schedule Empty'));
@@ -163,26 +187,17 @@ class _DesktopScreenState extends State<DesktopScreen> {
   }
 }
 
-class MobileScreen extends StatefulWidget {
-  const MobileScreen({super.key});
+class MobileScreen extends StatelessWidget {
+  const MobileScreen({
+    super.key,
+    required this.onQueryChanged,
+    required this.filteredHistory,
+    required this.controllerSearch,
+  });
 
-  @override
-  State<MobileScreen> createState() => _MobileScreenState();
-}
-
-class _MobileScreenState extends State<MobileScreen> {
-  String _query = '';
-
-  List<Doctor> get _filteredHistory {
-    final q = _query.trim().toLowerCase();
-    if (q.isEmpty) return doctorList;
-    return doctorList.where((d) {
-      return d.name.toLowerCase().contains(q) ||
-          d.specialty.toLowerCase().contains(q) ||
-          d.bio.toLowerCase().contains(q) ||
-          d.tags.any((t) => t.toLowerCase().contains(q));
-    }).toList();
-  }
+  final ValueChanged<String> onQueryChanged;
+  final List<Doctor> filteredHistory;
+  final dynamic controllerSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -190,37 +205,24 @@ class _MobileScreenState extends State<MobileScreen> {
       child: NestedScrollView(
         headerSliverBuilder: (context, _) {
           return [
-            SliverAppBar(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              elevation: 0,
-              pinned: false,
-              floating: false,
-              expandedHeight: 140,
-              automaticallyImplyLeading: false,
-              flexibleSpace: FlexibleSpaceBar(
-                collapseMode: CollapseMode.pin,
-                background: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Book \nappointment',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
-                  ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                child: Text(
+                  'Book \nappointment',
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
               ),
             ),
+
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverPersistentHeader(
                 pinned: true,
                 delegate: _StickyHeaderDelegate(
-                  height: 132,
+                  height: 140,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     child: Column(
                       spacing: 16,
                       children: [
@@ -238,11 +240,8 @@ class _MobileScreenState extends State<MobileScreen> {
                               borderRadius: BorderRadius.circular(32),
                             ),
                             child: TextField(
-                              onChanged: (value) {
-                                setState(() {
-                                  _query = value;
-                                });
-                              },
+                              controller: controllerSearch,
+                              onChanged: onQueryChanged,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -280,18 +279,22 @@ class _MobileScreenState extends State<MobileScreen> {
                             ),
                           ),
                         ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          clipBehavior: Clip.none,
-                          child: Row(
-                            spacing: 16,
-                            children: [
-                              _CustomTabBar(title: 'General', index: 0),
-                              _CustomTabBar(title: 'Dentist', index: 1),
-                              _CustomTabBar(title: 'Eye', index: 2),
-                              _CustomTabBar(title: 'Skin', index: 3),
-                              _CustomTabBar(title: 'Other', index: 4),
-                            ],
+                        Ink(
+                          width: double.infinity,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            clipBehavior: Clip.none,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 16,
+                              children: [
+                                _CustomTabBar(title: 'General', index: 0),
+                                _CustomTabBar(title: 'Dentist', index: 1),
+                                _CustomTabBar(title: 'Eye', index: 2),
+                                _CustomTabBar(title: 'Skin', index: 3),
+                                _CustomTabBar(title: 'Other', index: 4),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -304,7 +307,7 @@ class _MobileScreenState extends State<MobileScreen> {
         },
         body: TabBarView(
           children: [
-            _GeneralTabBody(items: _filteredHistory),
+            _GeneralTabBody(items: filteredHistory),
             _EmptyTabBody(),
             _EmptyTabBody(),
             _EmptyTabBody(),

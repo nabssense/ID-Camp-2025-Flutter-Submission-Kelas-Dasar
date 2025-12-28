@@ -486,11 +486,11 @@ class BottomAppBarMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      height: 116,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16  ,vertical: 16),
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.center,
         spacing: 48,
         children: [
           _ActionButton(
