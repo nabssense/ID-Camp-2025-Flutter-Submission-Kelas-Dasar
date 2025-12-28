@@ -220,7 +220,7 @@ class MobileScreen extends StatelessWidget {
               sliver: SliverPersistentHeader(
                 pinned: true,
                 delegate: _StickyHeaderDelegate(
-                  height: 140,
+                  height: 142,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     child: Column(
